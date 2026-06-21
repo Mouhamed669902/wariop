@@ -17,14 +17,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'boutique',
     'comptes',
-    # 👇 AJOUTE CLOUDINARY (si tu veux l'utiliser)
-    # 'cloudinary',
-    # 'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Déjà présent
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,12 +56,7 @@ DATABASES = {
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
+AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -75,31 +67,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# 🔥 CORRECTION ICI : Le bon chemin pour ton dossier static
-STATICFILES_DIRS = [
-    BASE_DIR / 'boutique' / 'static',  # ✅ Corrigé
-]
+STATICFILES_DIRS = [BASE_DIR / 'boutique' / 'static']
 
 # --- FICHIERS MÉDIA ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# --- OPTION 1 : Utiliser Cloudinary (RECOMMANDÉ) ---
-# Décommente si tu veux utiliser Cloudinary
-# import cloudinary
-# cloudinary.config(
-#     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
-#     api_key=os.environ.get('CLOUDINARY_API_KEY'),
-#     api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
-# )
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# --- OPTION 2 : Stockage local (avec Render Disk) ---
-# DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/comptes/login/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,32 +1,57 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import ProfilVendeur
 
-class InscriptionVendeurForm(forms.ModelForm):
-    username = forms.CharField(max_length=150, label="Nom d'utilisateur")
-    password = forms.CharField(widget=forms.PasswordInput(), label="Mot de passe")
-    email = forms.EmailField(label="Adresse Email")
+
+class InscriptionVendeurForm(UserCreationForm):
+    email = forms.EmailField(required=True, label="Adresse email", widget=forms.EmailInput(attrs={
+        'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+        'placeholder': 'exemple@email.com'
+    }))
+    nom_boutique = forms.CharField(max_length=200, required=True, label="Nom de la boutique",
+                                   widget=forms.TextInput(attrs={
+                                       'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+                                       'placeholder': 'Ma super boutique'
+                                   }))
+    telephone = forms.CharField(max_length=20, required=True, label="Numéro de téléphone",
+                                widget=forms.TextInput(attrs={
+                                    'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+                                    'placeholder': '07 00 00 00 00'
+                                }))
+    adresse = forms.CharField(label="Adresse physique", widget=forms.Textarea(attrs={
+        'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+        'rows': 3,
+        'placeholder': 'Votre adresse complète...'
+    }), required=True)
 
     class Meta:
-        model = ProfilVendeur
-        fields = ['nom_boutique', 'telephone', 'description_activite']
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
-    # --- SÉCURITÉ ET MESSAGE SIMPLE ICI ---
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        # On vérifie dans la base de données si ce nom existe déjà
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError("Ce nom d'utilisateur est déjà pris. Veuillez en choisir un autre.")
-        return username
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    def save(self, commit=True):
-        user = User.objects.create_user(
-            username=self.cleaned_data['username'],
-            email=self.cleaned_data['email'],
-            password=self.cleaned_data['password']
-        )
-        profil = super().save(commit=False)
-        profil.user = user
-        if commit:
-            profil.save()
-        return profil
+        # Supprimer tous les messages d'aide
+        self.fields['username'].label = "Nom d'utilisateur"
+        self.fields['username'].help_text = ""  # ← Supprime le message
+        self.fields['username'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+            'placeholder': 'Choisissez un nom d\'utilisateur'
+        })
+
+        self.fields['email'].help_text = ""  # ← Supprime le message
+
+        self.fields['password1'].label = "Mot de passe"
+        self.fields['password1'].help_text = ""  # ← Supprime les messages de validation
+        self.fields['password1'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+            'placeholder': 'Choisissez un mot de passe'
+        })
+
+        self.fields['password2'].label = "Confirmation du mot de passe"
+        self.fields['password2'].help_text = ""  # ← Supprime le message
+        self.fields['password2'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500',
+            'placeholder': 'Confirmez votre mot de passe'
+        })

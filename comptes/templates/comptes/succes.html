@@ -1,12 +1,34 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Demande reçue</title>
-</head>
-<body>
-    <h1>Félicitations ! Votre demande a été envoyée.</h1>
-    <p>L'administrateur de WARIOP va analyser vos informations et activera votre compte très bientôt.</p>
-    <a href="/">Retour à l'accueil</a>
-</body>
-</html>
+{% extends 'boutique/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-md text-center">
+    <!-- Icône de succès -->
+    <div class="text-6xl mb-4">✅</div>
+
+    <h2 class="text-2xl font-bold text-zinc-900 mb-2">Inscription envoyée avec succès !</h2>
+
+    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 text-left">
+        <p class="text-emerald-700 font-medium">📋 Récapitulatif :</p>
+        <p class="text-stone-600 text-sm mt-2">
+            <span class="font-semibold">🏪 Boutique :</span> {{ nom_boutique }}<br>
+            <span class="font-semibold">📧 Email :</span> {{ email }}
+        </p>
+    </div>
+
+    <p class="text-stone-600 mb-6">
+        Votre demande a bien été envoyée à l'administrateur.<br>
+        Vous recevrez un email de confirmation dès que votre boutique sera approuvée.<br>
+        <span class="text-sm text-stone-400">(Vérifiez vos spams si vous ne recevez rien)</span>
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{% url 'liste_produits' %}" class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition">
+            🏠 Retour à l'accueil
+        </a>
+        <a href="{% url 'login' %}" class="bg-stone-200 text-stone-700 px-6 py-3 rounded-xl font-bold hover:bg-stone-300 transition">
+            🔐 Se connecter
+        </a>
+    </div>
+</div>
+{% endblock %}

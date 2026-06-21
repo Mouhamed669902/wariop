@@ -16,15 +16,47 @@
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0">
                     <a href="{% url 'liste_produits' %}" class="flex items-center gap-2">
-                        <!-- 🔥 CORRECTION ICI : Chemin du logo -->
                         <img src="{% static 'boutique/images/wariop_logo.png' %}" alt="Logo WARIOP" class="w-12 h-12 object-contain">
                         <span class="text-2xl font-black text-zinc-900">WARIOP<span class="text-emerald-600">.</span></span>
                     </a>
                 </div>
-                <!-- Ajoute ici le reste de ta navbar (panier, connexion, etc.) -->
+                <div class="flex items-center space-x-6">
+                    <a href="{% url 'liste_produits' %}" class="text-sm font-medium text-stone-600 hover:text-emerald-600 transition">Accueil</a>
+                    <a href="{% url 'liste_produits' %}#produits" class="text-sm font-medium text-stone-600 hover:text-emerald-600 transition">Boutique</a>
+
+                    {% if user.is_authenticated %}
+                        {% if user.profilvendeur %}
+                            <a href="{% url 'ajouter_produit' %}" class="text-sm font-medium text-stone-600 hover:text-emerald-600 transition">Vendre</a>
+                            <a href="{% url 'dashboard_admin' %}" class="text-sm font-medium text-stone-600 hover:text-emerald-600 transition">Dashboard</a>
+                        {% endif %}
+                        <span class="text-sm font-medium text-stone-600">👋 {{ user.username }}</span>
+                        <a href="{% url 'logout' %}" class="text-sm font-medium text-red-500 hover:text-red-700 transition">Déconnexion</a>
+                    {% else %}
+                        <a href="{% url 'inscription_vendeur' %}" class="text-sm font-medium text-emerald-600 hover:text-emerald-700 transition">Devenir vendeur</a>
+                        <a href="{% url 'login' %}" class="text-sm font-medium text-stone-600 hover:text-emerald-600 transition">Se connecter</a>
+                    {% endif %}
+
+                    <a href="{% url 'voir_panier' %}" class="relative text-stone-600 hover:text-emerald-600 transition ml-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                        <span class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow-sm">
+                            {{ request.session.panier|length }}
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- Affichage des messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 mt-4">
+        {% for message in messages %}
+        <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-red-50 text-red-700 border border-red-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full">
         {% block content %}
