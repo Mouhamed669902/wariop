@@ -1,6 +1,3 @@
-"""
-Django settings for wariop_project project.
-"""
 from pathlib import Path
 import os
 
@@ -71,16 +68,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# --- CONFIGURATION FICHIERS STATIQUES ---
-STATIC_URL = 'static/'
+# --- FICHIERS STATIQUES ---
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# CORRECTION ICI : Pointage vers le dossier static à la racine
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# --- CONFIGURATION FICHIERS MÉDIA ---
+# --- FICHIERS MÉDIA ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -88,7 +82,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
