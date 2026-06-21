@@ -1,0 +1,26 @@
+{% extends 'boutique/base.html' %}
+
+{% block title %}Finaliser ma commande | WARIOP{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 30px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h2 style="margin-top: 0; color: #333;">Finaliser votre commande</h2>
+    <p style="font-size: 16px; background: #fff3cd; color: #856404; padding: 12px; border-radius: 4px; border: 1px solid #ffeeba;">
+        Montant total à payer à la livraison : <strong>{{ total }} FCFA</strong>
+    </p>
+
+    <form method="POST" style="margin-top: 20px;">
+        {% csrf_token %}
+        <label style="display:block; margin-bottom: 5px; font-weight: bold; color: #555;">Nom complet :</label>
+        <input type="text" name="nom_complet" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;"><br>
+
+        <label style="display:block; margin-bottom: 5px; font-weight: bold; color: #555;">Numéro de Téléphone :</label>
+        <input type="text" name="telephone" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;"><br>
+
+        <label style="display:block; margin-bottom: 5px; font-weight: bold; color: #555;">Adresse de livraison complète :</label>
+        <textarea name="adresse" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; height: 80px; box-sizing: border-box; font-family: Arial, sans-serif;"></textarea><br>
+
+        <button type="submit" style="width: 100%; background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Confirmer ma commande</button>
+    </form>
+</div>
+{% endblock %}

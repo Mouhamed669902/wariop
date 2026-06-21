@@ -1,0 +1,67 @@
+{% extends 'boutique/base.html' %}
+
+{% block title %}Mon Panier | WARIOP 🇨🇮{% endblock %}
+
+{% block content %}
+<div class="mb-8 border-b border-stone-200 pb-4">
+    <h1 class="text-3xl font-black text-zinc-900">Votre Panier</h1>
+</div>
+
+{% if articles_panier %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-stone-50 border-b border-stone-200">
+                    <tr class="text-stone-600 text-xs uppercase font-bold">
+                        <th class="p-5">Article</th>
+                        <th class="p-5 text-center">Qté</th>
+                        <th class="p-5 text-right">Prix</th>
+                        <th class="p-5 text-right">Total</th>
+                        <th class="p-5 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-100">
+                    {% for item in articles_panier %}
+                        <tr class="hover:bg-stone-50">
+                            <td class="p-5 font-bold text-zinc-900">{{ item.nom }}</td>
+                            <td class="p-5 text-center">
+                                <form action="{% url 'modifier_quantite' item.id %}" method="POST" class="flex justify-center items-center gap-2">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantite" value="{{ item.quantite }}" min="1" class="w-16 border rounded-lg p-1 text-center font-bold">
+                                    <button type="submit" class="text-xs bg-blue-500 text-white px-2 py-1 rounded">OK</button>
+                                </form>
+                            </td>
+                            <td class="p-5 text-right font-medium text-stone-600">{{ item.prix }} FCFA</td>
+                            <td class="p-5 text-right font-black text-zinc-900">{{ item.total_produit }} FCFA</td>
+                            <td class="p-5 text-center">
+                                <a href="{% url 'supprimer_du_panier' item.id %}" class="text-red-600 hover:text-red-800 text-xl">🗑️</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-zinc-900 text-white rounded-2xl p-6 shadow-xl">
+            <h3 class="text-lg font-black mb-4">Résumé</h3>
+            <div class="flex justify-between mb-6 border-b border-zinc-800 pb-4">
+                <span>Total</span>
+                <span class="text-2xl font-black text-orange-500">{{ total_panier }} FCFA</span>
+            </div>
+            <a href="{% url 'valider_commande' %}" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white text-center font-black py-3 rounded-xl mb-3">
+                Passer la commande 🇨🇮
+            </a>
+            <a href="{% url 'liste_produits' %}" class="block w-full bg-zinc-800 text-stone-300 text-center font-bold py-3 rounded-xl">
+                Continuer mes achats
+            </a>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center py-16 bg-white border border-stone-200 rounded-2xl p-8 max-w-md mx-auto">
+        <h3 class="text-xl font-bold mb-1">Votre panier est vide</h3>
+        <a href="{% url 'liste_produits' %}" class="inline-block bg-orange-500 text-white font-bold px-6 py-3 rounded-xl mt-4">
+            Découvrir les produits
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

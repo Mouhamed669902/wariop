@@ -1,0 +1,32 @@
+{% extends 'boutique/base.html' %}
+
+{% block title %}Vendre un article | WARIOP 🇨🇮{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto my-10">
+    <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-xl">
+        <h2 class="text-3xl font-black text-zinc-900 mb-2">Ajouter un produit</h2>
+        <p class="text-stone-500 mb-8">Partagez vos articles sur WARIOP pour vos clients ivoiriens.</p>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="flex flex-col">
+                    <label class="text-xs font-black uppercase text-stone-700 mb-2">{{ field.label }}</label>
+                    <div class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 focus-within:border-orange-500 transition">
+                        {{ field }}
+                    </div>
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl shadow-lg hover:shadow-xl transition">
+                Valider et Publier 🇨🇮
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

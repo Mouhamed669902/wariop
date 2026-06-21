@@ -1,0 +1,57 @@
+{% extends 'boutique/base.html' %}
+
+{% block content %}
+<div style="padding: 40px; background-color: #f4f7f6; min-height: 100vh;">
+    <h1 style="color: #333; margin-bottom: 30px;">Tableau de bord Administrateur</h1>
+    <form method="GET" style="margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; display: flex; gap: 10px; align-items: center;">
+    <label>Du :</label>
+    <input type="date" name="date_debut" value="{{ date_debut }}">
+    <label>Au :</label>
+    <input type="date" name="date_fin" value="{{ date_fin }}">
+    <button type="submit" style="background: #007bff; color: white; padding: 5px 15px; border: none; border-radius: 4px; cursor: pointer;">Filtrer</button>
+    <a href="{% url 'dashboard_admin' %}" style="color: #666; text-decoration: none; font-size: 14px;">Réinitialiser</a>
+    </form>
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px;">
+        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h3 style="color: #666; margin: 0;">Total des commandes</h3>
+            <p style="font-size: 32px; font-weight: 800; margin: 10px 0 0 0;">{{ total_commandes }}</p>
+        </div>
+        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h3 style="color: #666; margin: 0;">Revenus Totaux</h3>
+            <p style="font-size: 32px; font-weight: 800; color: #28a745; margin: 10px 0 0 0;">{{ revenus_totaux }} FCFA</p>
+        </div>
+    </div>
+
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h2 style="margin-top: 0;">Dernières commandes</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr style="background: #f8f9fa; text-align: left;">
+                    <th style="padding: 12px; border-bottom: 2px solid #eee;">Client</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #eee;">Montant</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #eee;">Date</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #eee;">Statut / Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cmd in dernieres_commandes %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px;">{{ cmd.nom_complet }}</td>
+                    <td style="padding: 12px; font-weight: bold;">{{ cmd.total }} FCFA</td>
+                    <td style="padding: 12px; color: #777;">{{ cmd.date_creation|date:"d M Y, H:i" }}</td>
+                    <td style="padding: 12px;">
+                        <div><strong>{{ cmd.get_statut_display }}</strong></div>
+                        {% if cmd.statut == 'en_attente' %}
+                            <a href="{% url 'changer_statut' cmd.id 'en_cours' %}" style="color: blue; text-decoration: underline;">Passer "En cours"</a>
+                        {% elif cmd.statut == 'en_cours' %}
+                            <a href="{% url 'changer_statut' cmd.id 'livre' %}" style="color: green; text-decoration: underline;">Marquer "Livré"</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

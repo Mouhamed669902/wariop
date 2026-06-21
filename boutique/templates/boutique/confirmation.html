@@ -1,0 +1,19 @@
+{% extends 'boutique/base.html' %}
+
+{% block title %}Commande Réussie ! | WARIOP{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 40px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center;">
+    <h1 style="color: #28a745; margin-top: 0;">🎉 Commande enregistrée !</h1>
+    <p style="font-size: 18px; margin-top: 20px; color: #333;">
+        Merci <strong>{{ commande.nom_complet }}</strong>, votre commande numéro <strong>#{{ commande.id }}</strong> a bien été prise en compte.
+    </p>
+    <p style="color: #666; font-size: 15px;">Notre équipe commerciale va vous contacter très rapidement au <strong>{{ commande.telephone }}</strong> pour organiser la livraison à votre adresse.</p>
+
+    <div style="background-color: #f8f9fa; border: 1px dashed #ccc; padding: 15px; margin: 25px 0; border-radius: 6px;">
+        <p style="font-weight: bold; font-size: 20px; color: #d9534f; margin: 0;">Montant de la facture : {{ commande.total }} FCFA</p>
+    </div>
+
+    <a href="/" style="display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 10px;">Retourner à l'accueil</a>
+</div>
+{% endblock %}

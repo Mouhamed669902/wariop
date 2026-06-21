@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WARIOP | E-commerce 🇨🇮{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900 min-h-screen flex flex-col antialiased">
+
+    <nav class="bg-white border-b-4 border-orange-500 sticky top-0 z-50 shadow-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{% url 'liste_produits' %}" class="flex items-center gap-2 group">
+                        <img src="{% static 'boutique/images/wariop_logo.png' %}" alt="Logo WARIOP"
+                             class="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-300">
+                        <span class="text-2xl font-black tracking-tighter text-zinc-900 group-hover:opacity-80 transition">
+                            WARIOP<span class="text-emerald-600">.</span>
+                        </span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex flex-grow justify-center px-6">
+                    <form action="{% url 'liste_produits' %}" method="GET" class="flex items-center bg-stone-100 border border-stone-200 rounded-full px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-orange-500 w-full max-w-md">
+                        <input
+                            type="text"
+                            name="q"
+                            placeholder="Rechercher un produit..."
+                            value="{{ query|default:'' }}"
+                            class="bg-transparent focus:outline-none text-sm w-full px-2"
+                        >
+                        <button type="submit" class="text-stone-500 hover:text-orange-600 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'voir_panier' %}" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all duration-200">
+                        <span>Mon Panier</span>
+                        <span class="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full font-black">🛒</span>
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <div class="flex items-center space-x-4 border-l pl-6 border-stone-200">
+                            <span class="text-stone-600 text-sm">Akwaba, <strong class="text-zinc-900">{{ user.username }}</strong></span>
+
+                            <a href="{% url 'ajouter_produit' %}" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-xl shadow-sm transition flex items-center gap-1">
+                                + Vendre
+                            </a>
+
+                            <form action="{% url 'logout' %}" method="POST" class="inline m-0 p-0">
+                                {% csrf_token %}
+                                <button type="submit" class="text-stone-400 hover:text-red-600 text-sm font-semibold cursor-pointer transition">
+                                    Déconnexion
+                                </button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="flex items-center space-x-4 border-l pl-6 border-stone-200">
+                            <a href="{% url 'login' %}" class="text-stone-600 hover:text-orange-500 text-sm font-bold transition">Se connecter</a>
+                            <a href="{% url 'inscription_vendeur' %}" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition">Devenir Vendeur</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-stone-700 hover:text-orange-500 focus:outline-none cursor-pointer">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-stone-100 border-t border-stone-200 px-4 pt-2 pb-4 space-y-3">
+            <form action="{% url 'liste_produits' %}" method="GET" class="flex items-center bg-white border border-stone-200 rounded-lg p-2">
+                <input type="text" name="q" placeholder="Rechercher..." value="{{ query|default:'' }}" class="bg-transparent focus:outline-none w-full text-sm px-2">
+                <button type="submit" class="text-stone-500">🔍</button>
+            </form>
+            <a href="{% url 'voir_panier' %}" class="block bg-emerald-600 text-white text-center px-4 py-2.5 rounded-lg font-bold shadow">🛒 Mon Panier</a>
+            {% if user.is_authenticated %}
+                <div class="text-stone-700 text-sm py-1 font-medium">Akwaba, <strong>{{ user.username }}</strong></div>
+                <a href="{% url 'ajouter_produit' %}" class="block bg-orange-500 text-white text-center px-4 py-2 rounded-lg font-bold shadow">+ Vendre un produit</a>
+                <form action="{% url 'logout' %}" method="POST" class="block m-0 py-1">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-600 font-bold text-left w-full cursor-pointer">Déconnexion</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="block text-stone-700 hover:text-orange-500 font-bold py-1">Se connecter</a>
+                <a href="{% url 'inscription_vendeur' %}" class="block bg-orange-500 text-white text-center px-4 py-2 rounded-lg font-bold shadow">Devenir Vendeur</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full box-border">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-zinc-900 text-stone-400 text-center py-8 text-sm border-t border-stone-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>&copy; 2026 <span class="text-white font-black tracking-wider">WARIOP</span>. Fait avec passion en Côte d'Ivoire 🇨🇮.</p>
+            <p class="text-xs text-stone-500">Sécurité et fiabilité garanties.</p>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if(btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
