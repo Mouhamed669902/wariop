@@ -121,6 +121,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    BASE_DIR / 'boutique/static',
+]
 # Redirection après s'être connecté
 LOGIN_REDIRECT_URL = '/'
 
@@ -129,8 +132,9 @@ LOGOUT_REDIRECT_URL = '/'
 import os
 
 # Dossier où Django va stocker les images téléchargées
+# Pour les fichiers media (tes images de produits)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Définit le type de clé primaire par défaut pour tous les modèles
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
