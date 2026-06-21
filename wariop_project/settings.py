@@ -7,7 +7,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-g50bw+5@5l2x--0^skb7!icov3&p1w$$y1ba@ee-a+8e@e*fvc'
-DEBUG = False # Doit être False pour la production
+DEBUG = False
 
 ALLOWED_HOSTS = ['wariop.onrender.com', 'localhost', '127.0.0.1']
 
@@ -24,7 +24,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Essentiel pour les images
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,8 +75,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# CORRECTION ICI : Pointage vers le dossier static à la racine
 STATICFILES_DIRS = [
-    BASE_DIR / 'boutique/static', # Django ira chercher ici
+    BASE_DIR / 'static',
 ]
 
 # --- CONFIGURATION FICHIERS MÉDIA ---
