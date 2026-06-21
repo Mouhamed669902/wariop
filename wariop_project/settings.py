@@ -75,10 +75,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [BASE_DIR / 'boutique' / 'static']
 
 # Configuration Cloudinary
+# 🔥 Configuration forcée avec les valeurs directes
 cloudinary.config(
-    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.environ.get('CLOUDINARY_API_KEY'),
-    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    cloud_name="dhtmc6vr1",
+    api_key="479733683485777",
+    api_secret="wpdsEZsJzmz0JgmScvxGglaB6G8"
 )
 
 # Utiliser Cloudinary pour stocker les images
