@@ -45,7 +45,8 @@
 
                 <div class="relative bg-stone-100 aspect-square w-full flex items-center justify-center overflow-hidden">
                     {% if produit.image %}
-                        <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <!-- 🔥 CHANGEMENT ICI : URL Cloudinary directe -->
+                        <img src="https://res.cloudinary.com/dhtmc6vr1/image/upload/{{ produit.image }}" alt="{{ produit.nom }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     {% else %}
                         <div class="flex flex-col items-center justify-center text-stone-400">
                             <span class="text-4xl mb-1">📦</span>
